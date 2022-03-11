@@ -3,16 +3,13 @@
 DATAFILE="owid-covid-data.csv"
 URL="https://github.com/owid/covid-19-data/raw/master/public/data/owid-covid-data.csv"
 
-
-[[ ! -e $DATAFILE ]] && wget -O $DATAFILE $URL
-[[ $difference_in_days -gt 2 ]] && wget -O $DATAFILE $URL
-
 latest_date=$( tail -n 1 $DATAFILE | cut -f 4 -d "," ) 
 seconds_today=$( date +%s )
 seconds_file=$( date -d $latest_date +%s )
 difference_in_days=$(( ($seconds_today - $seconds_file) / (60*60*24) )) 
 
-
+[[ ! -e $DATAFILE ]] && wget -O $DATAFILE $URL
+[[ $difference_in_days -gt 2 ]] && wget -O $DATAFILE $URL
 
 typeset -A columns
 typeset -A countries
